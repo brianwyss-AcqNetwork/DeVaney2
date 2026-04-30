@@ -166,15 +166,9 @@
 <div class="main">
   <div class="layout">
     <div>
-      <div class="api-setup" id="api-setup">
-        <h3>&#128273; API Key Required</h3>
-        <p>This agent uses the Anthropic Claude API. Enter your key below &mdash; stored only in your browser's local storage, never sent anywhere except directly to Anthropic.</p>
-        <div class="api-key-row">
-          <input type="password" id="api-key-input" placeholder="sk-ant-..." />
-          <button class="save-key-btn" onclick="saveKey()">Save Key</button>
-          <button class="save-key-btn" style="background:var(--blue-600);margin-left:4px;" onclick="testKey()">Test</button>
-        </div>
-        <div class="key-status" id="key-status"></div>
+      <div class="api-setup" id="api-setup" style="border-left-color:#639922;">
+        <h3 style="color:#3B6D11;">&#10003; Powered by Acquisition Network AI</h3>
+        <p>This agent connects securely through the AN proxy &mdash; no API key required. Click <strong>Scout Listings</strong> to begin.</p>
       </div>
 
       <div class="controls-row">
@@ -280,6 +274,9 @@
 <footer><strong>Acquisition Network Investors</strong> &middot; Avila Phoenix Ventures, LLC &middot; Nipomo, CA<br/>Prepared by Brian Wyss &middot; Confidential &middot; Not for distribution</footer>
 
 <script>
+// ── Proxy URL: update this after deploying your Cloudflare Worker ──
+const PROXY_URL = 'https://devaney-scout.YOUR-SUBDOMAIN.workers.dev';
+
 const SOURCES=[
   {name:"BizBuySell",active:true},{name:"BusinessesForSale",active:true},{name:"Sunbelt Network",active:true},
   {name:"BizBen",active:true},{name:"MergerFile",active:true},{name:"Dealstream",active:true},
@@ -291,28 +288,7 @@ const SOURCES=[
 ];
 let activeTier='all', srcVisible=false;
 
-function saveKey(){
-  const k=document.getElementById('api-key-input').value.trim();
-  if(!k.startsWith('sk-ant-')){
-    document.getElementById('key-status').innerHTML='<span style="color:#993C1D">Invalid key format. Keys start with sk-ant-</span>';
-    return;
-  }
-  localStorage.setItem('an_devaney_key',k);
-  document.getElementById('key-status').innerHTML='<span class="key-ok">&#10003; Key saved to local storage</span>';
-  document.getElementById('api-setup').style.borderLeftColor='#639922';
-}
-
-function getKey(){ return localStorage.getItem('an_devaney_key')||''; }
-
-window.addEventListener('load',()=>{
-  const k=getKey();
-  if(k){
-    document.getElementById('api-key-input').value=k;
-    document.getElementById('key-status').innerHTML='<span class="key-ok">&#10003; Key loaded</span>';
-    document.getElementById('api-setup').style.borderLeftColor='#639922';
-  }
-  renderSources();
-});
+window.addEventListener('load',()=>{ renderSources(); });
 
 function renderSources(){
   document.getElementById('sources-panel').innerHTML=SOURCES.map((s,i)=>
@@ -358,8 +334,6 @@ function advStep(n){
 }
 
 async function runSearch(){
-  const apiKey=getKey();
-  if(!apiKey){ alert('Please enter and save your Anthropic API key first.'); return; }
   const btn=document.getElementById('run-btn');
   btn.disabled=true; btn.textContent='Scouting...';
 
@@ -407,13 +381,10 @@ async function runSearch(){
     '[{"title":"string","sector":"string","tier":1,"location":"City, ST","askingPrice":number,"sde":number,"yearsOp":number,"description":"2-3 sentences","highlights":["string","string","string","string"],"fitScore":number,"fitRationale":"string","platform":"string","semiAbsentee":"string","riskFlag":"string","sbaEligible":true,"sbaNotes":"string"}]';
 
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    const resp=await fetch(PROXY_URL,{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
       },
       body:JSON.stringify({
         model:'claude-sonnet-4-5',
@@ -422,7 +393,7 @@ async function runSearch(){
         messages:[{role:'user',content:'Generate the deal scout listings now.'}]
       })
     });
-    if(!resp.ok){ const e=await resp.json(); const errMsg=e.error?.message||JSON.stringify(e)||'HTTP '+resp.status; throw new Error(errMsg); }
+    if(!resp.ok){ const e=await resp.json().catch(()=>({})); throw new Error(e.error?.message||'HTTP '+resp.status); }
     const data=await resp.json();
     const raw=data.content?.find(b=>b.type==='text')?.text||'';
     advStep(3); await delay(400);
@@ -472,23 +443,5 @@ function renderResults(deals){
   document.getElementById('results-container').innerHTML=html;
 }
 
-async function testKey(){
-  const k=document.getElementById('api-key-input').value.trim()||getKey();
-  if(!k){ alert('Enter your API key first'); return; }
-  const statusEl=document.getElementById('key-status');
-  statusEl.innerHTML='<span style="color:var(--text-muted)">Testing connection...</span>';
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:10,messages:[{role:'user',content:'Hi'}]})
-    });
-    const d=await r.json();
-    if(d.error){ statusEl.innerHTML='<span style="color:#993C1D">&#10007; API error: '+d.error.message+'</span>'; }
-    else{ statusEl.innerHTML='<span class="key-ok">&#10003; Connection successful &mdash; API key is working</span>'; }
-  } catch(e){ statusEl.innerHTML='<span style="color:#993C1D">&#10007; Network error: '+e.message+'</span>'; }
-}
 
 </script>
-</body>
-</html>
