@@ -424,19 +424,63 @@ async function runSearch(){
   document.getElementById('statusbar').innerHTML='';
 }
 
+var lastDeals=[];
+
+function exportCSV(){
+  if(!lastDeals.length)return;
+  var headers=['Title','Sector','Tier','Location','Asking Price','SDE','Years Operating','Fit Score','SBA Eligible','Platform','Semi-Absentee','Risk Flag','Fit Rationale','Description','Highlights'];
+  var rows=lastDeals.map(function(d){
+    return [
+      d.title,
+      d.sector,
+      d.tier===1?'Tier 1 - Trades':d.tier===2?'Tier 2 - Billing/Mfg':'Tier 3 - Hospitality',
+      d.location,
+      d.askingPrice,
+      d.sde,
+      d.yearsOp,
+      d.fitScore,
+      d.sbaEligible?'Yes':'No',
+      d.platform,
+      d.semiAbsentee,
+      d.riskFlag,
+      d.fitRationale||'',
+      d.description,
+      (d.highlights||[]).join(' | ')
+    ].map(function(v){
+      var s=String(v||'').replace(/"/g,'""');
+      return '"'+s+'"';
+    });
+  });
+  var csv=[headers.map(function(h){return'"'+h+'"';}).join(',')].concat(rows.map(function(r){return r.join(',');})).join('\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  var d=new Date();
+  var ds=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
+  a.download='DeVaney_DealScout_'+ds+'.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 function renderResults(deals){
   var t1=deals.filter(function(d){return d.tier===1;}).length;
   var t2=deals.filter(function(d){return d.tier===2;}).length;
   var t3=deals.filter(function(d){return d.tier===3;}).length;
   var avg=deals.length?Math.round(deals.reduce(function(a,b){return a+(b.fitScore||0);},0)/deals.length):0;
 
-  var html='<div class="summary-bar">'+
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">'+
+    '<div style="font-size:13px;color:var(--text-muted)">'+deals.length+' listings &middot; sorted by fit score</div>'+
+    '<button onclick="exportCSV()" style="padding:8px 16px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">&#11015; Export CSV</button>'+
+    '</div>'+
+    '<div class="summary-bar">'+
     '<div class="stat-card"><div class="stat-label">Listings</div><div class="stat-value">'+deals.length+'</div></div>'+
     '<div class="stat-card"><div class="stat-label">Avg Fit</div><div class="stat-value">'+avg+'</div></div>'+
     '<div class="stat-card"><div class="stat-label">T1/T2/T3</div><div class="stat-value" style="font-size:16px">'+t1+'&middot;'+t2+'&middot;'+t3+'</div></div>'+
     '<div class="stat-card"><div class="stat-label">SBA Eligible</div><div class="stat-value">'+deals.filter(function(d){return d.sbaEligible;}).length+'/'+deals.length+'</div></div>'+
     '</div><div class="results-grid">';
 
+  lastDeals=deals.slice();
   deals.sort(function(a,b){return(b.fitScore||0)-(a.fitScore||0);}).forEach(function(d){
     var tc=d.tier===1?'t1':d.tier===2?'t2':'t3';
     var tl=d.tier===1?'Tier 1 &mdash; Trades':d.tier===2?'Tier 2 &mdash; Billing/Mfg':'Tier 3 &mdash; Hospitality';
