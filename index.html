@@ -1,509 +1,1079 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DeVaney Deal Scout — Acquisition Network</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Will Pilling Deal Scout · Avila Phoenix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#0C2251;--navy-light:#1a3a7a;--gold:#C9A227;--gold-light:#e8c04a;
-  --blue-50:#E6F1FB;--blue-100:#B5D4F4;--blue-400:#378ADD;--blue-600:#185FA5;--blue-800:#0C447C;
-  --green-50:#EAF3DE;--green-400:#639922;--green-600:#3B6D11;
-  --amber-50:#FAEEDA;--amber-600:#854F0B;
-  --teal-100:#9FE1CB;--teal-600:#0F6E56;--coral-600:#993C1D;
-  --gray-100:#EDEDEB;--gray-200:#D3D1C7;
-  --text-primary:#1a1a18;--text-secondary:#5F5E5A;--text-muted:#888780;
-  --border:rgba(0,0,0,0.1);--border-md:rgba(0,0,0,0.18);
-  --bg:#ffffff;--bg-secondary:#F8F7F4;
-  --radius-sm:6px;--radius-md:8px;--radius-lg:12px;
-}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg-secondary);color:var(--text-primary);min-height:100vh;font-size:15px;line-height:1.6}
-nav{background:var(--navy);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.3)}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo{width:32px;height:32px}
-.nav-title{color:#fff;font-size:15px;font-weight:600}
-.nav-subtitle{color:var(--gold);font-size:11px;letter-spacing:.05em;text-transform:uppercase}
-.nav-badge{font-size:11px;padding:3px 10px;background:rgba(201,162,39,0.2);color:var(--gold-light);border-radius:20px;border:1px solid rgba(201,162,39,0.3)}
-.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);padding:3rem 2rem 2.5rem}
-.hero-inner{max-width:960px;margin:0 auto}
-.hero-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.hero h1{font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2}
-.hero h1 span{color:var(--gold)}
-.hero p{font-size:14px;color:rgba(255,255,255,0.65);max-width:560px;margin-bottom:1.5rem}
-.hero-stats{display:flex;gap:2rem;flex-wrap:wrap}
-.hero-stat-val{font-size:22px;font-weight:700;color:#fff}
-.hero-stat-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em}
-.main{max-width:1020px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
-.layout{display:grid;grid-template-columns:1fr 260px;gap:1.5rem;align-items:start}
-.api-banner{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:14px;border-left:3px solid var(--gold)}
-.api-banner h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px}
-.api-banner p{font-size:12px;color:var(--text-muted);line-height:1.6}
-.api-key-row{display:flex;gap:8px;margin-top:8px}
-.api-key-row input{flex:1;font-size:13px;padding:8px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border-md);font-family:monospace;outline:none;color:var(--text-primary)}
-.api-key-row input:focus{border-color:var(--blue-400)}
-.save-btn{padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap}
-.key-status{font-size:11px;margin-top:6px}
-.controls-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-.control-card{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-md);padding:10px 14px}
-.control-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-.control-card select{width:100%;font-size:13px;border:none;background:transparent;color:var(--text-primary);outline:none;cursor:pointer;font-family:inherit}
-.tier-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
-.tier-label{font-size:12px;color:var(--text-muted)}
-.tier-btn{font-size:12px;padding:5px 13px;border-radius:20px;border:0.5px solid var(--border-md);background:#fff;color:var(--text-secondary);cursor:pointer;font-family:inherit}
-.tier-btn.active-all{background:var(--gray-100);color:var(--text-primary);border-color:var(--gray-200)}
-.tier-btn.active-t1{background:var(--blue-50);color:var(--blue-800);border-color:var(--blue-100)}
-.tier-btn.active-t2{background:var(--green-50);color:var(--green-600);border-color:#C0DD97}
-.tier-btn.active-t3{background:var(--amber-50);color:var(--amber-600);border-color:#FAC775}
-.search-row{display:flex;gap:8px;margin-bottom:14px}
-.search-row input{flex:1;font-size:14px;padding:10px 14px;border-radius:var(--radius-md);border:0.5px solid var(--border-md);background:#fff;color:var(--text-primary);outline:none;font-family:inherit}
-.search-row input::placeholder{color:var(--text-muted)}
-.run-btn{padding:10px 22px;background:var(--gold);color:var(--navy);border:none;border-radius:var(--radius-md);font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
-.run-btn:disabled{opacity:0.5;cursor:not-allowed}
-.sources-toggle{font-size:12px;color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-bottom:10px;user-select:none}
-.sources-panel{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:14px;padding:12px;background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-md)}
-.source-chip{font-size:11px;padding:5px 8px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg-secondary);color:var(--text-muted);display:flex;align-items:center;gap:5px;cursor:pointer;user-select:none}
-.source-chip.on{background:var(--blue-50);color:var(--blue-800);border-color:var(--blue-100)}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--teal-100);flex-shrink:0}
-.dot.off{background:var(--gray-200)}
-.status-bar{font-size:13px;color:var(--text-muted);min-height:22px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.spinner{width:14px;height:14px;border:2px solid var(--gray-200);border-top-color:var(--blue-400);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
-.summary-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
-.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-md);padding:12px 14px}
-.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
-.stat-value{font-size:22px;font-weight:700;margin-top:2px}
-.results-grid{display:flex;flex-direction:column;gap:12px}
-.deal-card{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;border-left:3px solid var(--gray-200)}
-.deal-card.t1{border-left-color:var(--blue-400)}
-.deal-card.t2{border-left-color:var(--green-400)}
-.deal-card.t3{border-left-color:#EF9F27}
-.deal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px}
-.deal-title{font-size:15px;font-weight:600;flex:1}
-.deal-ask{font-size:17px;font-weight:700;color:var(--navy);white-space:nowrap}
-.deal-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
-.pill{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--bg-secondary);color:var(--text-muted);border:0.5px solid var(--border)}
-.tp{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
-.tp.t1{background:var(--blue-50);color:var(--blue-800)}
-.tp.t2{background:var(--green-50);color:var(--green-600)}
-.tp.t3{background:var(--amber-50);color:var(--amber-600)}
-.sba{background:#EAF3DE;color:var(--green-600);border-color:#C0DD97}
-.deal-desc{font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:10px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.metric{background:var(--bg-secondary);border-radius:var(--radius-sm);padding:8px 10px;border:0.5px solid var(--border)}
-.metric-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
-.metric-value{font-size:13px;font-weight:600;margin-top:2px;line-height:1.4}
-.highlights{margin-bottom:10px}
-.hl-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-.hl-item{font-size:12px;color:var(--text-secondary);padding:2px 0;display:flex;gap:6px}
-.hl-item::before{content:'\00B7';color:var(--gold);font-weight:700;flex-shrink:0}
-.risk{font-size:12px;padding:7px 10px;background:#FFF8F0;border-radius:var(--radius-sm);color:var(--text-secondary);margin-bottom:10px;border:0.5px solid #FAC775}
-.risk strong{color:var(--amber-600)}
-.deal-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:0.5px solid var(--border);flex-wrap:wrap;gap:8px}
-.src-tag{font-size:11px;color:var(--text-muted)}
-.fit{font-size:12px;font-weight:600}
-.fit.hi{color:var(--teal-600)}.fit.md{color:var(--amber-600)}.fit.lo{color:var(--coral-600)}
-.loading-overlay{text-align:center;padding:3rem 1rem}
-.big-spinner{width:32px;height:32px;border:3px solid var(--gray-200);border-top-color:var(--blue-400);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.5rem}
-.lsteps{text-align:left;max-width:340px;margin:0 auto}
-.lstep{font-size:13px;color:var(--text-muted);padding:5px 0;display:flex;align-items:center;gap:10px}
-.lstep.done{color:var(--teal-600)}
-.step-check{width:16px;height:16px;border-radius:50%;background:var(--teal-100);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--teal-600);font-weight:700;flex-shrink:0}
-.step-pend{width:16px;height:16px;border-radius:50%;background:var(--gray-100);border:0.5px solid var(--border-md);flex-shrink:0}
-.empty{text-align:center;padding:4rem 1rem}
-.empty-icon{font-size:40px;margin-bottom:14px}
-.empty h3{font-size:18px;font-weight:600;margin-bottom:8px}
-.empty p{font-size:14px;color:var(--text-muted);max-width:440px;margin:0 auto;line-height:1.7}
-.sidebar{position:sticky;top:72px}
-.sb-card{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:10px}
-.sb-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--border)}
-.bb-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:0.5px solid var(--gray-100)}
-.bb-row:last-child{border-bottom:none}
-.bb-key{color:var(--text-muted)}
-.bb-val{font-weight:600;text-align:right;max-width:60%}
-.op{border-radius:var(--radius-sm);padding:7px 9px;margin-bottom:6px}
-.op-role{font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
-.op-name{font-size:12px;font-weight:600;margin-bottom:3px}
-.op-desc{font-size:11px;color:var(--text-secondary);line-height:1.5}
-.tb{margin-bottom:8px}
-.tb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
-.tb-items{font-size:11px;color:var(--text-secondary);line-height:1.8}
-footer{background:var(--navy);color:rgba(255,255,255,0.45);font-size:11px;text-align:center;padding:1.25rem;margin-top:3rem}
-footer strong{color:var(--gold)}
-@media(max-width:760px){.layout{grid-template-columns:1fr}.sidebar{position:static}.controls-row{grid-template-columns:1fr 1fr}.summary-bar{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:1fr 1fr}.hero h1{font-size:22px}}
-@media(max-width:480px){.controls-row{grid-template-columns:1fr}nav{padding:0 1rem}.main{padding:1rem 1rem 3rem}.nav-badge{display:none}}
+  :root{
+    --navy:#0B1E3F;
+    --navy-deep:#061230;
+    --navy-soft:#1A2F55;
+    --gold:#C5A572;
+    --gold-bright:#D9BB85;
+    --gold-soft:#E8D5A8;
+    --cream:#F5EFE2;
+    --paper:#FAF7F0;
+    --ink:#1A1A1A;
+    --gray:#6B6B6B;
+    --gray-line:#D8D2C4;
+    --green:#2D6A4F;
+    --red:#9B2226;
+    --amber:#B7791F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:14px;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ── HEADER ──────────────────────────────────────────────── */
+  header{
+    background:linear-gradient(180deg,var(--navy) 0%, var(--navy-deep) 100%);
+    color:var(--cream);
+    padding:22px 40px;
+    border-bottom:3px solid var(--gold);
+    position:relative;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    bottom:-3px;left:0;right:0;height:3px;
+    background:linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-bright) 50%, var(--gold) 70%, transparent);
+  }
+  .header-inner{
+    max-width:1480px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;gap:32px;
+  }
+  .crest{
+    display:flex;align-items:center;gap:18px;
+  }
+  .crest-mark{
+    width:54px;height:54px;
+    border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:22px;
+    color:var(--gold);
+    letter-spacing:1px;
+    position:relative;
+  }
+  .crest-mark::before,.crest-mark::after{
+    content:"";position:absolute;
+    width:8px;height:8px;
+    border:1px solid var(--gold);
+  }
+  .crest-mark::before{top:-5px;left:-5px;border-right:none;border-bottom:none}
+  .crest-mark::after{bottom:-5px;right:-5px;border-left:none;border-top:none}
+  .crest-text h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:24px;
+    letter-spacing:0.5px;line-height:1.1;
+  }
+  .crest-text h1 em{
+    font-style:italic;color:var(--gold);font-weight:500;
+  }
+  .crest-text .sub{
+    font-size:11px;letter-spacing:2.5px;
+    color:var(--gold-soft);text-transform:uppercase;
+    margin-top:4px;
+  }
+  .agent-pill{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 14px;
+    border:1px solid var(--gold);
+    background:rgba(197,165,114,0.08);
+    font-size:11px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--gold-soft);
+  }
+  .pulse{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--gold-bright);
+    box-shadow:0 0 0 0 rgba(217,187,133,0.8);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(217,187,133,0.7)}
+    70%{box-shadow:0 0 0 8px rgba(217,187,133,0)}
+    100%{box-shadow:0 0 0 0 rgba(217,187,133,0)}
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────────── */
+  main{
+    flex:1;display:grid;
+    grid-template-columns:340px 1fr;
+    gap:0;
+    max-width:1480px;width:100%;margin:0 auto;
+  }
+  aside{
+    background:var(--navy);
+    color:var(--cream);
+    padding:28px 24px 60px;
+    border-right:1px solid var(--gold);
+  }
+  aside h3{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:18px;
+    color:var(--gold);
+    letter-spacing:0.3px;
+    margin-bottom:6px;
+    padding-bottom:8px;
+    border-bottom:1px solid rgba(197,165,114,0.3);
+  }
+  aside .group{margin-bottom:24px}
+  aside .group-label{
+    font-size:10px;letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:10px;display:block;
+  }
+  .pills{display:flex;flex-wrap:wrap;gap:6px}
+  .pill{
+    font-size:11px;font-weight:500;
+    padding:6px 12px;
+    border:1px solid rgba(197,165,114,0.4);
+    color:var(--cream);
+    cursor:pointer;
+    transition:all 0.18s;
+    user-select:none;letter-spacing:0.4px;
+    background:transparent;
+  }
+  .pill.active{
+    background:var(--gold);
+    color:var(--navy-deep);
+    border-color:var(--gold);
+    font-weight:600;
+  }
+  .pill:hover:not(.active){
+    border-color:var(--gold);color:var(--gold-bright);
+  }
+  select, input[type="number"], input[type="text"], textarea{
+    width:100%;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(197,165,114,0.3);
+    color:var(--cream);
+    padding:9px 12px;
+    font-family:inherit;font-size:13px;
+    outline:none;
+    transition:border 0.15s;
+  }
+  select:focus, input:focus, textarea:focus{
+    border-color:var(--gold);
+  }
+  textarea{resize:vertical;min-height:62px;font-size:12px;line-height:1.45}
+  .input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .platform-list{
+    display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;
+    font-size:11px;
+  }
+  .platform-list label{
+    display:flex;align-items:center;gap:6px;cursor:pointer;
+    color:var(--cream);letter-spacing:0.3px;
+  }
+  .platform-list input{accent-color:var(--gold)}
+
+  button.scout{
+    width:100%;
+    margin-top:18px;
+    background:linear-gradient(180deg,var(--gold-bright) 0%, var(--gold) 100%);
+    color:var(--navy-deep);
+    border:none;
+    padding:13px 16px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px;
+    font-weight:600;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:all 0.2s;
+    position:relative;
+  }
+  button.scout:hover{
+    background:linear-gradient(180deg,#E5C893 0%, #CFB07E 100%);
+    box-shadow:0 4px 14px rgba(197,165,114,0.4);
+  }
+  button.scout:disabled{opacity:0.6;cursor:wait}
+
+  /* ── WORKBENCH ───────────────────────────────────────────── */
+  .workbench{
+    padding:30px 38px 60px;
+    background:var(--paper);
+    min-height:calc(100vh - 90px);
+  }
+  .buybox{
+    background:linear-gradient(135deg, #FFFFFF 0%, var(--cream) 100%);
+    border:1px solid var(--gray-line);
+    border-left:4px solid var(--gold);
+    padding:22px 28px;
+    margin-bottom:24px;
+    position:relative;
+  }
+  .buybox::after{
+    content:"❦";
+    position:absolute;top:14px;right:20px;
+    font-size:22px;color:var(--gold);
+  }
+  .buybox h4{
+    font-family:'Cormorant Garamond',serif;
+    font-size:21px;font-weight:600;
+    color:var(--navy);letter-spacing:0.3px;
+    margin-bottom:4px;
+  }
+  .buybox h4 em{font-style:italic;color:var(--gold);font-weight:500}
+  .buybox .grid{
+    margin-top:14px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px;
+    font-size:12.5px;line-height:1.55;color:#3A3A3A;
+  }
+  .buybox b{color:var(--navy);font-weight:600;display:block;margin-bottom:2px;letter-spacing:0.3px}
+
+  .empty{
+    background:linear-gradient(180deg,#FFFFFF 0%, var(--cream) 100%);
+    border:1px dashed var(--gray-line);
+    padding:80px 40px;text-align:center;
+  }
+  .empty .ornament{
+    font-family:'Cormorant Garamond',serif;
+    font-size:36px;color:var(--gold);
+    margin-bottom:14px;
+  }
+  .empty h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:28px;
+    color:var(--navy);margin-bottom:10px;
+  }
+  .empty p{
+    color:var(--gray);max-width:540px;margin:0 auto;
+    font-size:13.5px;line-height:1.7;
+  }
+
+  .results-header{
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--gray-line);
+    padding-bottom:14px;margin-bottom:18px;
+  }
+  .results-header h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:26px;color:var(--navy);
+  }
+  .results-header h2 em{color:var(--gold);font-style:italic}
+  .results-header .count{
+    font-size:11px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--gray);
+  }
+  .results-header .actions{display:flex;gap:10px;align-items:center}
+  .csv-btn{
+    background:transparent;
+    border:1px solid var(--gold);
+    color:var(--navy);
+    padding:7px 14px;
+    font-size:11px;letter-spacing:1.5px;
+    text-transform:uppercase;font-weight:600;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
+  .csv-btn:hover:not(:disabled){background:var(--gold);color:var(--navy-deep)}
+  .csv-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+  .deal{
+    background:#FFFFFF;
+    border:1px solid var(--gray-line);
+    border-left:4px solid var(--gold);
+    padding:22px 26px;
+    margin-bottom:14px;
+    display:grid;
+    grid-template-columns:1fr 200px;
+    gap:24px;
+    transition:box-shadow 0.18s, transform 0.18s;
+  }
+  .deal:hover{box-shadow:0 6px 22px rgba(11,30,63,0.08); transform:translateY(-1px)}
+  .deal.advance{border-left-color:var(--green)}
+  .deal.diligence{border-left-color:var(--amber)}
+  .deal.pass{border-left-color:var(--red);opacity:0.85}
+  .deal-head{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:16px;margin-bottom:8px;
+  }
+  .deal-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:21px;font-weight:600;color:var(--navy);
+    line-height:1.2;letter-spacing:0.2px;
+  }
+  .deal-meta{
+    font-size:11px;color:var(--gray);
+    margin-top:4px;letter-spacing:0.5px;
+  }
+  .deal-meta .sep{color:var(--gold);margin:0 6px}
+  .deal-stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+    margin:14px 0 10px;
+  }
+  .stat{
+    background:var(--cream);
+    padding:8px 10px;
+    border-left:2px solid var(--gold);
+  }
+  .stat .label{
+    font-size:9px;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--gray);
+  }
+  .stat .val{
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px;font-weight:600;color:var(--navy);
+    margin-top:2px;
+  }
+  .deal-summary{
+    font-size:13px;color:#333;line-height:1.55;
+    margin-top:8px;
+  }
+  .deal-fit{
+    font-size:12px;color:#333;line-height:1.55;
+    margin-top:10px;
+    padding:10px 12px;
+    background:rgba(197,165,114,0.08);
+    border-left:2px solid var(--gold);
+  }
+  .deal-fit b{color:var(--navy);font-weight:600;letter-spacing:0.3px}
+  .deal-risk{
+    font-size:11.5px;color:#5C2A2A;
+    margin-top:8px;font-style:italic;
+  }
+  .deal-side{
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    border-left:1px solid var(--gray-line);
+    padding-left:20px;
+  }
+  .score-ring{
+    width:108px;height:108px;
+    border-radius:50%;
+    background:conic-gradient(var(--gold) calc(var(--p)*1%), #EEE6D1 0);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .score-ring::before{
+    content:"";position:absolute;
+    inset:7px;border-radius:50%;background:#FFF;
+  }
+  .score-num{
+    position:relative;font-family:'Cormorant Garamond',serif;
+    font-size:34px;font-weight:600;color:var(--navy);
+    line-height:1;
+  }
+  .score-label{
+    font-size:9px;letter-spacing:2px;color:var(--gray);
+    text-transform:uppercase;margin-top:2px;
+    position:relative;
+  }
+  .verdict{
+    margin-top:14px;font-size:11px;letter-spacing:1.5px;
+    text-transform:uppercase;font-weight:600;
+    text-align:center;padding:6px 10px;
+    width:100%;
+  }
+  .verdict.advance{background:rgba(45,106,79,0.12);color:var(--green)}
+  .verdict.diligence{background:rgba(183,121,31,0.12);color:var(--amber)}
+  .verdict.pass{background:rgba(155,34,38,0.12);color:var(--red)}
+  .deal-source{
+    font-size:10px;letter-spacing:1.2px;color:var(--gray);
+    text-transform:uppercase;
+  }
+  .deal-footer-row{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--gray-line);
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;flex-wrap:wrap;
+  }
+  .view-listing{
+    display:inline-block;
+    background:var(--navy);
+    color:var(--gold-bright);
+    text-decoration:none;
+    padding:8px 18px;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    font-weight:600;
+    border:1px solid var(--gold);
+    transition:all 0.18s;
+  }
+  .view-listing:hover{
+    background:var(--gold);
+    color:var(--navy-deep);
+  }
+  .view-listing.disabled{
+    background:transparent;
+    color:var(--gray);
+    border-color:var(--gray-line);
+    cursor:not-allowed;
+    pointer-events:none;
+  }
+
+  .log{
+    background:var(--navy-deep);
+    border:1px solid var(--gold);
+    color:var(--cream);
+    padding:18px 22px;font-family:'JetBrains Mono','Courier New',monospace;
+    font-size:12px;line-height:1.7;
+    margin-bottom:22px;max-height:240px;overflow-y:auto;
+  }
+  .log-line{display:block;color:var(--gold-soft)}
+  .log-line.log-ok{color:#A3D9A5}
+  .log-line.log-err{color:#F4A8A8}
+  .log-line .ts{color:var(--gold);margin-right:8px}
+
+  footer{
+    background:var(--navy-deep);
+    color:var(--cream);
+    padding:18px 40px;
+    border-top:2px solid var(--gold);
+    font-size:11px;letter-spacing:1px;text-align:center;
+  }
+  footer b{color:var(--gold)}
+
+  @media(max-width:1024px){
+    main{grid-template-columns:1fr}
+    aside{border-right:none;border-bottom:1px solid var(--gold)}
+    .buybox .grid{grid-template-columns:repeat(2,1fr)}
+    .deal{grid-template-columns:1fr}
+    .deal-side{border-left:none;border-top:1px solid var(--gray-line);padding-left:0;padding-top:18px;flex-direction:row;gap:20px;justify-content:flex-start}
+    .verdict{width:auto}
+    .deal-stats{grid-template-columns:repeat(2,1fr)}
+  }
 </style>
 </head>
 <body>
-<nav>
-  <a class="nav-brand" href="#">
-    <svg class="nav-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="32" height="32" rx="6" fill="#0C2251"/>
-      <path d="M16 7L7 11.5l9 4.5 9-4.5L16 7zM7 20.5l9 4.5 9-4.5M7 16l9 4.5 9-4.5" stroke="#C9A227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <div><div class="nav-title">Acquisition Network</div><div class="nav-subtitle">Avila Phoenix Ventures</div></div>
-  </a>
-  <div class="nav-badge">DeVaney Deal Scout &middot; AI Agent</div>
-</nav>
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-label">Client Buy Box Intelligence</div>
-    <h1>DeVaney <span>Deal Scout</span></h1>
-    <p>AI-powered listing intelligence across 20 business-for-sale platforms. Florida primary, East Texas &amp; Biloxi secondary. New listings within 30 days.</p>
-    <div class="hero-stats">
-      <div><div class="hero-stat-val">20</div><div class="hero-stat-label">Platforms</div></div>
-      <div><div class="hero-stat-val">$500K&ndash;$1M</div><div class="hero-stat-label">Price Range</div></div>
-      <div><div class="hero-stat-val">$125K+</div><div class="hero-stat-label">Min SDE</div></div>
-      <div><div class="hero-stat-val">30 days</div><div class="hero-stat-label">Listing Window</div></div>
+
+<header>
+  <div class="header-inner">
+    <div class="crest">
+      <div class="crest-mark">WP</div>
+      <div class="crest-text">
+        <h1>Will Pilling <em>Deal Scout</em></h1>
+        <div class="sub">Avila Phoenix · Acquisition Sourcing Agent</div>
+      </div>
+    </div>
+    <div class="agent-pill">
+      <span class="pulse"></span>
+      <span>Agent Online</span>
     </div>
   </div>
-</div>
-<div class="main">
-  <div class="layout">
-    <div>
-      <div class="api-banner" id="api-banner">
-        <h3>&#128273; Enter Anthropic API Key</h3>
-        <p>Your key is stored only in this browser session and sent directly to Anthropic. Get a key at <strong>console.anthropic.com</strong> (requires billing enabled).</p>
-        <div class="api-key-row">
-          <input type="password" id="apikey" placeholder="sk-ant-..." autocomplete="off"/>
-          <button class="save-btn" onclick="saveKey()">Save &amp; Use</button>
-        </div>
-        <div class="key-status" id="keystatus"></div>
+</header>
+
+<main>
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside>
+    <h3>Buy Box Filters</h3>
+
+    <div class="group">
+      <span class="group-label">Sectors</span>
+      <div class="pills" id="sector-pills">
+        <span class="pill active" data-key="home">Home Services</span>
+        <span class="pill active" data-key="autobody">Auto Body</span>
+        <span class="pill active" data-key="autorepair">Auto Repair</span>
+        <span class="pill active" data-key="aftermkt">Auto Aftermarket</span>
       </div>
-      <div class="controls-row">
-        <div class="control-card"><div class="control-label">Geography</div>
-          <select id="geo">
-            <option value="all">All Regions</option>
-            <option value="florida">Florida (Primary)</option>
-            <option value="texas">East Texas</option>
-            <option value="biloxi">Biloxi, MS</option>
-          </select>
-        </div>
-        <div class="control-card"><div class="control-label">Price Range</div>
-          <select id="price">
-            <option value="all">$500K &ndash; $1M</option>
-            <option value="low">$500K &ndash; $700K</option>
-            <option value="mid">$700K &ndash; $850K</option>
-            <option value="high">$850K &ndash; $1M</option>
-          </select>
-        </div>
-        <div class="control-card"><div class="control-label">Min SDE</div>
-          <select id="sde">
-            <option value="125">$125K+</option>
-            <option value="150">$150K+</option>
-            <option value="200">$200K+ (Preferred)</option>
-            <option value="250">$250K+</option>
-          </select>
-        </div>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Geography</span>
+      <select id="state-select">
+        <option value="both">Pennsylvania &amp; Utah</option>
+        <option value="PA">Pennsylvania only</option>
+        <option value="UT">Utah only</option>
+      </select>
+    </div>
+
+    <div class="group">
+      <span class="group-label">SDE Range (USD)</span>
+      <div class="input-grid">
+        <input type="number" id="sde-min" value="150000" step="25000" />
+        <input type="number" id="sde-max" value="500000" step="25000" />
       </div>
-      <div class="tier-row">
-        <span class="tier-label">Sector:</span>
-        <button class="tier-btn active-all" onclick="setTier(this,'all')">All tiers</button>
-        <button class="tier-btn" onclick="setTier(this,'1')">T1 &mdash; Trades</button>
-        <button class="tier-btn" onclick="setTier(this,'2')">T2 &mdash; Billing/Mfg</button>
-        <button class="tier-btn" onclick="setTier(this,'3')">T3 &mdash; Hospitality</button>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Asking Price (USD)</span>
+      <div class="input-grid">
+        <input type="number" id="price-min" value="500000" step="50000" />
+        <input type="number" id="price-max" value="1200000" step="50000" />
       </div>
-      <div class="search-row">
-        <input type="text" id="ctx" placeholder="Add analyst context (e.g. owner retiring, established crew)..."/>
-        <button class="run-btn" id="runbtn" onclick="runSearch()">Scout Listings</button>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Max SDE Multiple</span>
+      <input type="number" id="multiple-max" value="4.0" step="0.1" min="1" max="8" />
+    </div>
+
+    <div class="group">
+      <span class="group-label">Listing Window</span>
+      <select id="window-select">
+        <option value="30">Last 30 days</option>
+        <option value="60" selected>Last 60 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="180">Last 6 months</option>
+      </select>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Result Count</span>
+      <select id="count-select">
+        <option value="8">8 listings</option>
+        <option value="12" selected>12 listings</option>
+        <option value="16">16 listings</option>
+        <option value="20">20 listings</option>
+      </select>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Listing Platforms</span>
+      <div class="platform-list" id="platform-list">
+        <label><input type="checkbox" checked data-key="bizbuysell"/> BizBuySell</label>
+        <label><input type="checkbox" checked data-key="bizquest"/> BizQuest</label>
+        <label><input type="checkbox" checked data-key="bizben"/> BizBen</label>
+        <label><input type="checkbox" checked data-key="dealstream"/> DealStream</label>
+        <label><input type="checkbox" checked data-key="loopnet"/> LoopNet</label>
+        <label><input type="checkbox" checked data-key="sunbelt"/> Sunbelt</label>
+        <label><input type="checkbox" checked data-key="murphy"/> Murphy BB</label>
+        <label><input type="checkbox" checked data-key="brokers"/> Local Brokers</label>
+        <label><input type="checkbox" data-key="offmarket"/> Off-Market</label>
       </div>
-      <div class="sources-toggle" onclick="toggleSrc()"><span id="srcarrow">&#9658;</span> <span id="srclabel">Show listing sources (20 platforms)</span></div>
-      <div id="srcpanel" class="sources-panel" style="display:none"></div>
-      <div id="statusbar" class="status-bar"></div>
-      <div id="results">
-        <div class="empty">
-          <div class="empty-icon">&#127919;</div>
-          <h3>Ready to scout for the DeVaneys</h3>
-          <p>Enter your API key above, set filters, and click <strong>Scout Listings</strong>.</p>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Custom Sourcing Notes</span>
+      <textarea id="custom-ctx" placeholder="e.g. focus on collision shops with real estate; HVAC with recurring service contracts; auto repair near university towns; brick-and-mortar required, exclude eCommerce…"></textarea>
+    </div>
+
+    <button class="scout" id="scoutBtn">Scout Listings</button>
+  </aside>
+
+  <!-- ════════ MAIN WORKBENCH ════════ -->
+  <section class="workbench">
+
+    <div class="buybox">
+      <h4>Will Pilling <em>— Avila Phoenix Buy Box</em></h4>
+      <div class="grid">
+        <div>
+          <b>Sectors</b>
+          Home Services · Auto Body · Auto Repair · Automotive Aftermarket
+        </div>
+        <div>
+          <b>Financial Floor</b>
+          SDE $150K–$500K · Asking $500K–$1.2M · Max 4.0× SDE
+        </div>
+        <div>
+          <b>Geography</b>
+          Pennsylvania &amp; Utah
+        </div>
+        <div>
+          <b>Operating Model</b>
+          Brick-and-mortar · Semi-absentee capable · Real W-2 staff in place
+        </div>
+        <div>
+          <b>Hard Excludes</b>
+          eCommerce · SaaS · Online-only · Digital products · Pure dropship
+        </div>
+        <div>
+          <b>Preferences</b>
+          Established 5+ yrs · Stable revenue · Real estate available · Seller financing
         </div>
       </div>
     </div>
-    <div class="sidebar">
-      <div class="sb-card">
-        <div class="sb-title">Buy Box</div>
-        <div class="bb-row"><span class="bb-key">Price</span><span class="bb-val">$500K&ndash;$1M</span></div>
-        <div class="bb-row"><span class="bb-key">SDE preferred</span><span class="bb-val">$200K&ndash;$300K+</span></div>
-        <div class="bb-row"><span class="bb-key">SDE minimum</span><span class="bb-val">$125K+</span></div>
-        <div class="bb-row"><span class="bb-key">Company age</span><span class="bb-val">5+ years</span></div>
-        <div class="bb-row"><span class="bb-key">Structure</span><span class="bb-val">SBA 7(a)+note</span></div>
-        <div class="bb-row"><span class="bb-key">Seller carry</span><span class="bb-val">5&ndash;10%</span></div>
-        <div class="bb-row"><span class="bb-key">Model</span><span class="bb-val">Semi-absentee</span></div>
-        <div class="bb-row"><span class="bb-key">Geography</span><span class="bb-val">FL&middot;E.TX&middot;Biloxi</span></div>
-      </div>
-      <div class="sb-card">
-        <div class="sb-title">Operators</div>
-        <div class="op" style="background:var(--blue-50)">
-          <div class="op-role" style="color:var(--blue-600)">Operator/Owner</div>
-          <div class="op-name" style="color:var(--blue-800)">Darren DeVaney</div>
-          <div class="op-desc">Oil industry 3wk on/off (Alaska). HVAC/Plumbing/Electrical. Semi-absentee required.</div>
-        </div>
-        <div class="op" style="background:var(--green-50)">
-          <div class="op-role" style="color:var(--green-600)">Finance Lead</div>
-          <div class="op-name" style="color:var(--green-600)">Laura DeVaney</div>
-          <div class="op-desc">Medical Billing &amp; Coding &mdash; Neuro, Ortho, Spine.</div>
-        </div>
-        <div class="op" style="background:var(--amber-50)">
-          <div class="op-role" style="color:var(--amber-600)">GM Candidate</div>
-          <div class="op-name" style="color:var(--amber-600)">DeVaney Daughter</div>
-          <div class="op-desc">KOA Campground manager. Ready-made GM.</div>
-        </div>
-      </div>
-      <div class="sb-card">
-        <div class="sb-title">Priority Sectors</div>
-        <div class="tb"><div class="tb-label" style="color:var(--blue-800)">T1 Best Fit</div><div class="tb-items">HVAC&middot;Plumbing&middot;Electrical&middot;Mechanical</div></div>
-        <div class="tb"><div class="tb-label" style="color:var(--green-600)">T2 Strong</div><div class="tb-items">Medical Billing/RCM&middot;Neuro/Ortho&middot;Light Mfg</div></div>
-        <div class="tb"><div class="tb-label" style="color:var(--amber-600)">T3 Opportunistic</div><div class="tb-items">Campground&middot;STR&middot;Property Svcs&middot;Restoration</div></div>
-      </div>
+
+    <div id="logSection"></div>
+
+    <div class="empty" id="emptyPanel">
+      <div class="ornament">❦</div>
+      <h2>Awaiting Sourcing Sweep</h2>
+      <p>Configure the buy box filters at left and launch the agent. The Will Pilling Deal Scout will sweep listing platforms, score each deal against Will's exact criteria, and surface the highest-fit opportunities first — sorted by Fit Score and capped at the brick-and-mortar gate.</p>
     </div>
-  </div>
-</div>
-<footer><strong>Acquisition Network Investors</strong> &middot; Avila Phoenix Ventures, LLC &middot; Nipomo, CA<br>Prepared by Brian Wyss &middot; Confidential</footer>
+
+    <div id="resultsPanel" style="display:none">
+      <div class="results-header">
+        <h2>Sourced <em>Opportunities</em></h2>
+        <div class="actions">
+          <div class="count" id="resultsCount"></div>
+          <button class="csv-btn" id="csvBtn" disabled>↓ Export CSV</button>
+        </div>
+      </div>
+      <div id="dealsGrid"></div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  Will Pilling Deal Scout · Avila Phoenix Ventures, LLC · Operated by <b>Brian Wyss</b> · Confidential — for internal use only
+</footer>
 
 <script>
-var SOURCES=[
-  {n:"BizBuySell",on:true},{n:"BusinessesForSale",on:true},{n:"Sunbelt Network",on:true},
-  {n:"BizBen",on:true},{n:"MergerFile",on:true},{n:"Dealstream",on:true},
-  {n:"BusinessBroker.net",on:true},{n:"LoopNet",on:true},{n:"BusinessMart",on:true},
-  {n:"Transworld",on:true},{n:"Exchange Marketplace",on:true},{n:"SMERGERS",on:true},
-  {n:"Digital Exits",on:true},{n:"PartnerOnCall",on:true},{n:"Flippa",on:false},
-  {n:"Website Closers",on:false},{n:"Vested BB",on:true},{n:"Quiet Light",on:false},
-  {n:"FB Biz Groups",on:true},{n:"Franchise Opps",on:true}
-];
-var activeTier='all', srcOpen=false;
+//================================================================
+// WILL PILLING DEAL SCOUT — Avila Phoenix
+// Operated by Brian Wyss / Avila Phoenix Ventures, LLC
+//================================================================
 
-function saveKey(){
-  var k=document.getElementById('apikey').value.trim();
-  if(!k){document.getElementById('keystatus').innerHTML='<span style="color:#993C1D">Please enter a key</span>';return;}
-  if(!k.startsWith('sk-ant-')){document.getElementById('keystatus').innerHTML='<span style="color:#993C1D">Key must start with sk-ant-</span>';return;}
-  sessionStorage.setItem('dvk',k);
-  document.getElementById('keystatus').innerHTML='<span style="color:#0F6E56">&#10003; Key saved for this session</span>';
-  document.getElementById('api-banner').style.borderLeftColor='#639922';
+const STATE = {
+  sectors: new Set(['home','autobody','autorepair','aftermkt']),
+  platforms: {
+    bizbuysell:true, bizquest:true, bizben:true, dealstream:true,
+    loopnet:true, sunbelt:true, murphy:true, brokers:true, offmarket:false
+  },
+  results: []
+};
+
+/* ── Pill toggling ────────────────────────────────────────── */
+document.querySelectorAll('#sector-pills .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const k = p.dataset.key;
+    if(STATE.sectors.has(k)){ STATE.sectors.delete(k); p.classList.remove('active'); }
+    else { STATE.sectors.add(k); p.classList.add('active'); }
+  });
+});
+document.querySelectorAll('#platform-list input').forEach(cb=>{
+  cb.addEventListener('change', ()=>{ STATE.platforms[cb.dataset.key] = cb.checked; });
+});
+
+/* ── Helpers ──────────────────────────────────────────────── */
+const fmt$ = n => {
+  if(n==null || isNaN(n)) return '—';
+  return n>=1000000 ? '$'+(n/1000000).toFixed(2)+'M' : '$'+(n/1000).toFixed(0)+'K';
+};
+const SECTOR_LABELS = {
+  home:'Home Services', autobody:'Auto Body',
+  autorepair:'Auto Repair', aftermkt:'Automotive Aftermarket'
+};
+
+function getCtx(){
+  return {
+    sectors: [...STATE.sectors],
+    state: document.getElementById('state-select').value,
+    sdeMin: +document.getElementById('sde-min').value,
+    sdeMax: +document.getElementById('sde-max').value,
+    priceMin: +document.getElementById('price-min').value,
+    priceMax: +document.getElementById('price-max').value,
+    multipleMax: +document.getElementById('multiple-max').value,
+    window: +document.getElementById('window-select').value,
+    count: +document.getElementById('count-select').value,
+    platforms: Object.entries(STATE.platforms).filter(([_,v])=>v).map(([k])=>k),
+    customCtx: document.getElementById('custom-ctx').value.trim()
+  };
 }
 
-function getKey(){
-  return sessionStorage.getItem('dvk')||'';
+/* ── LOG PANEL ────────────────────────────────────────────── */
+function logInit(){
+  const sec = document.getElementById('logSection');
+  sec.innerHTML = `<div class="log" id="log"></div>`;
+}
+function logPush(text, cls=''){
+  const log = document.getElementById('log'); if(!log) return;
+  const t = new Date(); const ts = t.toTimeString().slice(0,8);
+  const line = document.createElement('span');
+  line.className = 'log-line '+cls;
+  line.innerHTML = `<span class="ts">[${ts}]</span>${text}`;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
 }
 
-function renderSrc(){
-  document.getElementById('srcpanel').innerHTML=SOURCES.map(function(s,i){
-    return '<div class="source-chip '+(s.on?'on':'')+'" onclick="toggleS('+i+')">'+'<div class="dot '+(s.on?'':'off')+'"></div>'+s.n+'</div>';
+/* ── SCORING MATRIX ───────────────────────────────────────── */
+function scoreDeal(d, ctx){
+  let s = 0;
+
+  // Sector match — 25 pts
+  if(ctx.sectors.includes(d.sectorKey)) s += 25;
+  else return 0;
+
+  // Geography gate — 20 pts (hard gate)
+  if(ctx.state==='both'){
+    if(d.state==='PA' || d.state==='UT') s += 20;
+    else return 0;
+  } else {
+    if(d.state===ctx.state) s += 20;
+    else return 0;
+  }
+
+  // SDE band — 15 pts (tolerant of undisclosed)
+  if(d.sde==null){
+    s += 6; // partial credit, must be diligenced
+  } else if(d.sde >= ctx.sdeMin && d.sde <= ctx.sdeMax){
+    s += 15;
+  } else if(d.sde >= ctx.sdeMin*0.85 && d.sde <= ctx.sdeMax*1.15){
+    s += 8;
+  } else {
+    return 0; // out of band
+  }
+
+  // Price band — 10 pts (tolerant of undisclosed)
+  if(d.price==null){
+    s += 4;
+  } else if(d.price >= ctx.priceMin && d.price <= ctx.priceMax){
+    s += 10;
+  } else if(d.price <= ctx.priceMax*1.15){
+    s += 5;
+  }
+
+  // Multiple discipline — 12 pts (only if both disclosed)
+  if(d.price!=null && d.sde!=null && d.sde>0){
+    const m = d.price / d.sde;
+    if(m <= ctx.multipleMax) s += 12;
+    else if(m <= ctx.multipleMax + 0.5) s += 6;
+  } else {
+    s += 4; // partial credit pending diligence
+  }
+
+  // Brick-and-mortar gate — 10 pts (hard)
+  if(d.online === true) return 0;
+  s += 10;
+
+  // Age & staffing — 8 pts
+  const age = (new Date().getFullYear()) - (d.yearEstablished||2015);
+  if(age >= 10) s += 5; else if(age >= 5) s += 3;
+  if((d.employees||0) >= 5) s += 3; else if((d.employees||0) >= 3) s += 1;
+
+  return Math.min(s, 99);
+}
+
+function verdictFor(score){
+  if(score >= 78) return {key:'advance', label:'Advance to LOI'};
+  if(score >= 58) return {key:'diligence', label:'Further Diligence'};
+  return {key:'pass', label:'Pass / Awareness'};
+}
+
+/* ── RENDER ───────────────────────────────────────────────── */
+function renderResults(deals){
+  STATE.results = deals;
+  document.getElementById('emptyPanel').style.display='none';
+  document.getElementById('resultsPanel').style.display='block';
+  document.getElementById('csvBtn').disabled = deals.length===0;
+  document.getElementById('resultsCount').textContent =
+    deals.length + (deals.length===1?' opportunity':' opportunities') + ' · sorted by fit score';
+
+  const grid = document.getElementById('dealsGrid');
+  if(deals.length===0){
+    grid.innerHTML = `<div class="empty"><div class="ornament">❦</div><h2>No Listings Cleared the Buy Box</h2><p>The agent swept the configured platforms but no listings cleared all gates. Loosen the SDE band, broaden geography, or expand sector selection and re-run.</p></div>`;
+    return;
+  }
+  grid.innerHTML = deals.map(d=>{
+    const v = verdictFor(d.score);
+    const m = (d.price && d.sde && d.sde>0) ? (d.price/d.sde).toFixed(2)+'×' : '—';
+    const hasUrl = d.url && d.url.startsWith('http');
+    const urlButton = hasUrl
+      ? `<a class="view-listing" href="${d.url}" target="_blank" rel="noopener noreferrer">View Listing →</a>`
+      : `<span class="view-listing disabled" title="No listing URL provided">No URL Available</span>`;
+    return `<div class="deal ${v.key}">
+      <div class="deal-body">
+        <div class="deal-head">
+          <div>
+            <div class="deal-name">${d.name}</div>
+            <div class="deal-meta">${SECTOR_LABELS[d.sectorKey]||d.sector}<span class="sep">·</span>${d.city}, ${d.state}<span class="sep">·</span>Est. ${d.yearEstablished||'—'}<span class="sep">·</span>${d.employees||'—'} employees</div>
+          </div>
+        </div>
+        <div class="deal-stats">
+          <div class="stat"><div class="label">Asking</div><div class="val">${fmt$(d.price)}</div></div>
+          <div class="stat"><div class="label">SDE</div><div class="val">${fmt$(d.sde)}</div></div>
+          <div class="stat"><div class="label">Multiple</div><div class="val">${m}</div></div>
+          <div class="stat"><div class="label">Days Listed</div><div class="val">${d.daysListed||'—'}</div></div>
+        </div>
+        <div class="deal-summary">${d.summary || d.rationale || ''}</div>
+        <div class="deal-fit"><b>Fit Notes — </b>${d.fitNotes || d.rationale || 'Aligns with Will Pilling buy box parameters.'}</div>
+        ${d.risk ? `<div class="deal-risk">⚠ ${d.risk}</div>`:''}
+        <div class="deal-footer-row">
+          <div class="deal-source">Source: ${d.source||'Listing Platform'}</div>
+          ${urlButton}
+        </div>
+      </div>
+      <div class="deal-side">
+        <div class="score-ring" style="--p:${d.score}">
+          <div style="text-align:center">
+            <div class="score-num">${d.score}</div>
+            <div class="score-label">Fit Score</div>
+          </div>
+        </div>
+        <div class="verdict ${v.key}">${v.label}</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function toggleS(i){SOURCES[i].on=!SOURCES[i].on;renderSrc();}
-
-function toggleSrc(){
-  srcOpen=!srcOpen;
-  document.getElementById('srcpanel').style.display=srcOpen?'grid':'none';
-  document.getElementById('srcarrow').innerHTML=srcOpen?'&#9660;':'&#9658;';
-  document.getElementById('srclabel').textContent=(srcOpen?'Hide':'Show')+' listing sources ('+SOURCES.filter(function(s){return s.on}).length+' active)';
-}
-
-function setTier(el,t){
-  document.querySelectorAll('.tier-btn').forEach(function(b){b.className='tier-btn';});
-  var cls={all:'active-all','1':'active-t1','2':'active-t2','3':'active-t3'};
-  el.classList.add(cls[t]);
-  activeTier=t;
-}
-
-function fmt(n){
-  if(!n&&n!==0)return'N/A';
-  if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M';
-  if(n>=1000)return'$'+Math.round(n/1000)+'K';
-  return'$'+n;
-}
-
-function fitCls(s){return s>=80?'hi':s>=60?'md':'lo';}
-function fitLbl(s){return s>=80?'&#9679; Strong fit':s>=60?'&#9680; Moderate fit':'&#9675; Marginal fit';}
-
-function delay(ms){return new Promise(function(r){setTimeout(r,ms);});}
-
-var stepLabels=[
-  'Analyzing DeVaney buy box...',
-  'Searching listing platforms...',
-  'Scoring operator fit...',
-  'Building deal summaries...'
-];
-
-function advStep(n){
-  var steps=document.querySelectorAll('.lstep');
-  if(!steps.length)return;
-  steps.forEach(function(s,i){
-    if(i<n){s.className='lstep done';s.innerHTML='<div class="step-check">&#10003;</div> '+stepLabels[i];}
-    else if(i===n){s.style.color='';s.innerHTML='<div class="spinner"></div> '+stepLabels[i];}
-  });
-}
-
-async function runSearch(){
-  var key=getKey();
-  if(!key){
-    alert('Please enter your Anthropic API key first.');
-    document.getElementById('apikey').focus();
-    return;
-  }
-
-  var btn=document.getElementById('runbtn');
-  btn.disabled=true;
-  btn.textContent='Scouting...';
-
-  var geo=document.getElementById('geo').value;
-  var price=document.getElementById('price').value;
-  var sde=document.getElementById('sde').value;
-  var ctx=document.getElementById('ctx').value.trim();
-  var srcs=SOURCES.filter(function(s){return s.on;}).map(function(s){return s.n;}).join(', ');
-
-  var geoMap={all:'Florida (primary), East Texas, Biloxi MS',florida:'Florida',texas:'East Texas',biloxi:'Biloxi, MS'};
-  var priceMap={all:'$500,000-$1,000,000',low:'$500,000-$700,000',mid:'$700,000-$850,000',high:'$850,000-$1,000,000'};
-  var tierMap={
-    all:'Tier 1 (HVAC/Plumbing/Electrical), Tier 2 (Medical Billing/RCM/Light Mfg), Tier 3 (Campground/STR/Restoration)',
-    '1':'Tier 1 - HVAC, Plumbing, Electrical contractors',
-    '2':'Tier 2 - Medical Billing/RCM, Healthcare Admin, Light Manufacturing',
-    '3':'Tier 3 - Campground/Hospitality, STR, Property Services, Restoration'
+/* ── CSV EXPORT ───────────────────────────────────────────── */
+function exportCSV(){
+  if(!STATE.results.length) return;
+  const ts = new Date();
+  const stamp = ts.toISOString().slice(0,10) + '_' + ts.toTimeString().slice(0,5).replace(':','');
+  const meta = [
+    ['Will Pilling Deal Scout — Avila Phoenix'],
+    ['Operating Partner','Brian Wyss · Avila Phoenix Ventures, LLC'],
+    ['Generated', ts.toString()],
+    ['Deal Count', STATE.results.length],
+    ['']
+  ];
+  const headers = ['Fit Score','Verdict','Business Name','Sector','City','State','Year Est.','Employees','Asking','SDE','Multiple','Days Listed','Listing URL','Summary','Fit Notes','Risk','Source'];
+  const esc = v => {
+    if(v==null) return '';
+    const s = String(v);
+    if(/[",\n]/.test(s)) return '"'+s.replace(/"/g,'""')+'"';
+    return s;
   };
+  const rows = STATE.results.map(d=>[
+    d.score, verdictFor(d.score).label, d.name,
+    SECTOR_LABELS[d.sectorKey]||d.sector, d.city, d.state,
+    d.yearEstablished, d.employees, d.price, d.sde,
+    (d.price && d.sde) ? (d.price/d.sde).toFixed(2) : '',
+    d.daysListed,
+    d.url||'',
+    d.summary||d.rationale||'', d.fitNotes||'', d.risk||'', d.source||''
+  ].map(esc).join(','));
 
-  document.getElementById('results').innerHTML=
-    '<div class="loading-overlay"><div class="big-spinner"></div><div class="lsteps">'+
-    stepLabels.map(function(l,i){
-      return '<div class="lstep" style="'+(i>0?'color:var(--text-muted)':'')+'">'+(i===0?'<div class="spinner"></div>':'<div class="step-pend"></div>')+' '+l+'</div>';
-    }).join('')+'</div></div>';
+  const csv = '\uFEFF' + meta.map(r=>r.map(esc).join(',')).join('\n') + '\n' +
+              headers.map(esc).join(',') + '\n' + rows.join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `WillPilling_Deal_Scout_${stamp}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+document.getElementById('csvBtn').addEventListener('click', exportCSV);
 
-  await delay(600); advStep(1);
-  await delay(500); advStep(2);
+/* ── SYSTEM PROMPT ────────────────────────────────────────── */
+function buildSystemPrompt(ctx){
+  const sectorList = ctx.sectors.map(k=>SECTOR_LABELS[k]).join(', ');
+  const stateLabel = ctx.state==='both' ? 'Pennsylvania OR Utah' : (ctx.state==='PA'?'Pennsylvania':'Utah');
+  return `You are the Will Pilling Deal Scout — an institutional acquisition sourcing agent for Will Pilling. You are operated by Brian Wyss of Avila Phoenix Ventures, LLC.
 
-  var sys='You are an expert M&A deal scout for Acquisition Network Investors (Avila Phoenix Ventures, Brian Wyss).\n\n'+
-    'Scout for Laura & Darren DeVaney:\n'+
-    '- Darren: Oil industry 3wks on/off (Alaska). HVAC/Plumbing/Electrical. Needs semi-absentee.\n'+
-    '- Laura: Medical Billing & Coding, Neuro/Ortho/Spine. Admin/billing oversight.\n'+
-    '- Daughter: KOA Campground manager. Ready GM for hospitality/STR.\n\n'+
-    'BUY BOX: Price '+priceMap[price]+' | SDE min $'+sde+'K+ | SDE preferred $200K-$300K+\n'+
-    'Structure: SBA 7(a) + seller note 5-10% | Semi-absentee | 5+ years old\n'+
-    'Geography: '+geoMap[geo]+' | Sectors: '+tierMap[activeTier]+'\n'+
-    'Sources: '+srcs+(ctx?'\nAnalyst notes: '+ctx:'')+'\n\n'+
-    'Generate 6-8 realistic business-for-sale listings. Vary quality. Feel like real broker listings.\n\n'+
-    'Return ONLY a JSON array, no markdown, no explanation:\n'+
-    '[{"title":"string","sector":"string","tier":1,"location":"City ST","askingPrice":800000,"sde":200000,"yearsOp":12,"description":"2-3 sentences about the business.","highlights":["point 1","point 2","point 3","point 4"],"fitScore":85,"fitRationale":"why this fits","platform":"BizBuySell","semiAbsentee":"assessment","riskFlag":"one risk","sbaEligible":true}]';
+YOUR MISSION: Use the web_search tool to find REAL, CURRENT business-for-sale listings that match Will Pilling's exact buy box. You MUST run multiple web searches. You MUST return ONLY listings whose listing URL you actually saw in search results. DO NOT fabricate, hallucinate, or invent listings. If you cannot find ${ctx.count} qualifying listings, return fewer — quality over quantity.
 
-  try{
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+REQUIRED SEARCH STRATEGY:
+1. Run AT LEAST 4-6 web searches across different platform/sector/state combinations
+2. Sample queries: "auto repair business for sale Pennsylvania bizbuysell", "HVAC business for sale Utah bizquest", "collision shop for sale Pennsylvania", "plumbing business for sale Utah", etc.
+3. Cover each enabled platform: ${ctx.platforms.join(', ')}
+4. ONLY include listings whose URL you actually found in search results
+
+WILL PILLING'S BUY BOX (HARD GATES):
+- SDE: $${ctx.sdeMin.toLocaleString()} – $${ctx.sdeMax.toLocaleString()}
+- Asking Price: $${ctx.priceMin.toLocaleString()} – $${ctx.priceMax.toLocaleString()}
+- Max SDE Multiple: ${ctx.multipleMax}x
+- Geography: ${stateLabel}
+- Sectors: ${sectorList}
+- HARD EXCLUDE: Online-only businesses, eCommerce, SaaS, digital products, pure dropship
+- REQUIRED: Brick-and-mortar, semi-absentee capable, real W-2 staff in place
+- Preference: 5+ years established, real estate available, seller financing offered
+
+PLATFORMS TO SEARCH: ${ctx.platforms.join(', ')}
+
+CUSTOM SOURCING NOTES: ${ctx.customCtx || 'apply standard buy box.'}
+
+Return up to ${ctx.count} REAL listings sorted by buy-box fit. RESPOND ONLY with a valid JSON array — no markdown, no preamble, no explanation:
+
+[{
+  "name":"Exact business name from listing",
+  "sectorKey":"home|autobody|autorepair|aftermkt",
+  "sector":"Full sector label",
+  "state":"PA or UT",
+  "city":"City from listing",
+  "sde":250000,
+  "price":750000,
+  "daysListed":14,
+  "employees":8,
+  "yearEstablished":2008,
+  "source":"Platform name (BizBuySell, BizQuest, etc.)",
+  "url":"FULL https:// URL of the actual listing — REQUIRED, must be a real URL from search results",
+  "online":false,
+  "summary":"2-3 sentence operating description from the actual listing",
+  "fitNotes":"How this matches Will's buy box — sector, multiple discipline, semi-absentee viability, real estate posture",
+  "risk":"One key risk or diligence flag, if any (else empty string)"
+}]
+
+CRITICAL: Every listing MUST include a real, working "url" field pointing to the actual listing page. If you cannot find a URL for a listing, DO NOT include it. Better to return 4 verified deals than 12 fabricated ones. If financial details aren't disclosed in the listing, use null and note it in fitNotes.
+
+NEVER reference Acquisition Network Investors. NEVER reference HSW Partners. NEVER use the term "retrade." Maintain Avila Phoenix institutional voice.`;
+}
+
+/* ── FALLBACK: real platform search links ─────────────────── */
+/* When the live agent path fails, the scout returns links to
+   actual platform search-result pages filtered by Will's buy box.
+   These are real URLs — Will lands on the platform's live listing
+   index, pre-filtered by sector and state, where he can browse
+   current real inventory. No fabricated listings.            */
+
+const SECTOR_QUERY = {
+  home: { kw:"home services", bbsCat:"home-services" },
+  autobody: { kw:"auto body collision", bbsCat:"auto-body-shops" },
+  autorepair: { kw:"auto repair shop", bbsCat:"auto-repair-shops" },
+  aftermkt: { kw:"automotive aftermarket", bbsCat:"automotive-and-boats" }
+};
+const STATE_LABEL = { PA:"Pennsylvania", UT:"Utah" };
+
+function buildPlatformSearchLink(platform, sectorKey, state){
+  const sk = SECTOR_QUERY[sectorKey];
+  const stateName = STATE_LABEL[state];
+  const stateLow = stateName.toLowerCase();
+  const kwEnc = encodeURIComponent(sk.kw);
+  switch(platform){
+    case 'BizBuySell':
+      return `https://www.bizbuysell.com/${stateLow}-businesses-for-sale/?q=${kwEnc}`;
+    case 'BizQuest':
+      return `https://www.bizquest.com/businesses-for-sale/${stateLow}/?q=${kwEnc}`;
+    case 'BizBen':
+      return `https://www.bizben.com/businesses-for-sale-${stateLow}.php?q=${kwEnc}`;
+    case 'DealStream':
+      return `https://www.dealstream.com/listings?location=${encodeURIComponent(stateName)}&q=${kwEnc}`;
+    case 'LoopNet':
+      return `https://www.loopnet.com/biz/${stateLow}-businesses-for-sale/?sk=${kwEnc}`;
+    case 'Sunbelt':
+      return `https://www.sunbeltnetwork.com/business-search/?location=${encodeURIComponent(stateName)}&q=${kwEnc}`;
+    case 'Murphy BB':
+      return `https://www.murphybusiness.com/businesses-for-sale/?location=${encodeURIComponent(stateName)}&q=${kwEnc}`;
+    default:
+      return `https://www.google.com/search?q=${encodeURIComponent(sk.kw+' business for sale '+stateName)}`;
+  }
+}
+
+const PLATFORM_KEY_TO_NAME = {
+  bizbuysell:'BizBuySell', bizquest:'BizQuest', bizben:'BizBen',
+  dealstream:'DealStream', loopnet:'LoopNet', sunbelt:'Sunbelt',
+  murphy:'Murphy BB', brokers:'Local Brokers'
+};
+
+function generateFallbackSearchLinks(ctx){
+  const items = [];
+  const states = ctx.state==='both' ? ['PA','UT'] : [ctx.state];
+  const platformsToUse = ctx.platforms
+    .filter(p=>p!=='offmarket' && p!=='brokers')
+    .map(p=>PLATFORM_KEY_TO_NAME[p])
+    .filter(Boolean);
+
+  for(const sectorKey of ctx.sectors){
+    for(const state of states){
+      for(const platform of platformsToUse){
+        items.push({
+          name: `${SECTOR_LABELS[sectorKey]} listings — ${STATE_LABEL[state]}`,
+          sectorKey, sector: SECTOR_LABELS[sectorKey],
+          state, city: STATE_LABEL[state],
+          sde: null, price: null, daysListed: null,
+          employees: null, yearEstablished: null,
+          source: platform,
+          url: buildPlatformSearchLink(platform, sectorKey, state),
+          online: false,
+          summary: `Live ${platform} search results filtered for ${SECTOR_LABELS[sectorKey].toLowerCase()} businesses in ${STATE_LABEL[state]}. Click through to browse current listings, then bring promising candidates back to the scout for full buy-box scoring.`,
+          fitNotes: `Pre-filtered platform search rather than a single listing. Use this as a manual sweep entry point when the live agent path is unavailable.`,
+          risk: `Manual review required — these are platform indices, not pre-vetted listings.`
+        });
+      }
+    }
+  }
+  return items.slice(0, ctx.count);
+}
+
+/* ── MAIN AGENT ───────────────────────────────────────────── */
+async function runScout(){
+  const ctx = getCtx();
+  if(ctx.sectors.length === 0){ alert('Select at least one sector.'); return; }
+
+  const btn = document.getElementById('scoutBtn');
+  btn.disabled = true; btn.textContent = 'Scouting…';
+  document.getElementById('emptyPanel').style.display='none';
+  document.getElementById('resultsPanel').style.display='none';
+  logInit();
+
+  logPush('Initializing Will Pilling Deal Scout · Avila Phoenix');
+  logPush(`Buy box: ${ctx.sectors.map(k=>SECTOR_LABELS[k]).join(' / ')} · ${ctx.state==='both'?'PA + UT':ctx.state}`);
+  logPush(`Financial gates: SDE ${fmt$(ctx.sdeMin)}–${fmt$(ctx.sdeMax)} · Price ${fmt$(ctx.priceMin)}–${fmt$(ctx.priceMax)} · Max ${ctx.multipleMax}× SDE`);
+  logPush(`Sweeping ${ctx.platforms.length} platforms · ${ctx.window}-day window…`);
+
+  // Live API path — routed through Cloudflare Worker proxy
+  const WORKER_URL = 'https://wp-scout.wyssbk.workers.dev';
+  try {
+    logPush('Routing through Cloudflare Worker → claude-sonnet-4-20250514 with web search tool…');
+    const resp = await fetch(WORKER_URL, {
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-sonnet-4-5',
-        max_tokens:4000,
-        system:sys,
-        messages:[{role:'user',content:'Generate the listings now.'}]
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:8000,
+        system: buildSystemPrompt(ctx),
+        messages:[{role:'user', content:`Run web searches now across the enabled platforms. Find real, currently-listed businesses matching the buy box. Return up to ${ctx.count} verified listings as the JSON array specified — every listing MUST include a real listing URL you found in search results. Do not fabricate listings.`}],
+        tools:[{type:'web_search_20250305', name:'web_search'}]
       })
     });
+    if(!resp.ok) throw new Error('Worker HTTP '+resp.status);
+    const data = await resp.json();
 
-    if(!resp.ok){
-      var e=await resp.json().catch(function(){return{};});
-      throw new Error(e.error&&e.error.message?e.error.message:'HTTP '+resp.status);
+    // Count tool uses for transparency
+    const toolUses = (data.content||[]).filter(b=>b.type==='server_tool_use'||b.type==='web_search_tool_result'||b.type==='tool_use');
+    if(toolUses.length>0) logPush(`Agent ran ${toolUses.length} web search tool calls`, 'log-ok');
+
+    // Concatenate all text blocks (web_search interleaves text + tool_result blocks)
+    const text = (data.content||[])
+      .filter(b=>b.type==='text')
+      .map(b=>b.text).join('\n')
+      .replace(/```json|```/g,'').trim();
+
+    // Find the JSON array — model may include preamble text despite instructions
+    let deals;
+    try {
+      deals = JSON.parse(text);
+    } catch(e1){
+      // Fallback: extract first [...] block
+      const match = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
+      if(match){
+        try { deals = JSON.parse(match[0]); }
+        catch(e2){
+          logPush('Live response JSON parse failed — falling back to curated library', 'log-err');
+          runFromLibrary(ctx);
+          btn.disabled=false; btn.textContent='Scout Listings';
+          return;
+        }
+      } else {
+        logPush('No JSON array found in response — falling back to curated library', 'log-err');
+        runFromLibrary(ctx);
+        btn.disabled=false; btn.textContent='Scout Listings';
+        return;
+      }
     }
 
-    var data=await resp.json();
-    var raw=data.content&&data.content.find(function(b){return b.type==='text';});
-    raw=raw?raw.text:'';
-    advStep(3); await delay(400);
-    advStep(4); await delay(300);
-    var deals=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    if(!Array.isArray(deals) || deals.length===0){
+      logPush('Agent returned no listings — falling back to curated library', 'log-err');
+      runFromLibrary(ctx);
+      btn.disabled=false; btn.textContent='Scout Listings';
+      return;
+    }
+
+    logPush(`Received ${deals.length} candidate listings from agent`, 'log-ok');
+    const withUrl = deals.filter(d=>d.url && d.url.startsWith('http')).length;
+    logPush(`${withUrl} of ${deals.length} include verified listing URLs`, withUrl===deals.length?'log-ok':'log-err');
+    logPush('Applying Will Pilling scoring matrix…');
+    deals.forEach(d=>d.score = scoreDeal(d, ctx));
+    deals = deals.filter(d=>d.score>0).sort((a,b)=>b.score-a.score);
+    logPush(`${deals.length} deals cleared the buy box gate`, 'log-ok');
     renderResults(deals);
-  }catch(err){
-    document.getElementById('results').innerHTML=
-      '<div class="empty"><div class="empty-icon">&#9888;&#65039;</div><h3>Error</h3>'+
-      '<p>'+err.message+'</p>'+
-      '<p style="margin-top:8px;font-size:12px;color:var(--text-muted)">Check: key starts with sk-ant- &middot; billing enabled at console.anthropic.com &middot; no browser extension blocking api.anthropic.com</p></div>';
+  } catch(err){
+    logPush(`Worker path unavailable (${err.message}) — falling back to curated library`, 'log-err');
+    runFromLibrary(ctx);
   }
 
-  btn.disabled=false;
-  btn.textContent='Scout Listings';
-  document.getElementById('statusbar').innerHTML='';
+  btn.disabled=false; btn.textContent='Scout Listings';
 }
 
-var lastDeals=[];
-
-function exportCSV(){
-  if(!lastDeals.length)return;
-  var headers=['Title','Sector','Tier','Location','Asking Price','SDE','Years Operating','Fit Score','SBA Eligible','Platform','Semi-Absentee','Risk Flag','Fit Rationale','Description','Highlights'];
-  var rows=lastDeals.map(function(d){
-    return [
-      d.title,
-      d.sector,
-      d.tier===1?'Tier 1 - Trades':d.tier===2?'Tier 2 - Billing/Mfg':'Tier 3 - Hospitality',
-      d.location,
-      d.askingPrice,
-      d.sde,
-      d.yearsOp,
-      d.fitScore,
-      d.sbaEligible?'Yes':'No',
-      d.platform,
-      d.semiAbsentee,
-      d.riskFlag,
-      d.fitRationale||'',
-      d.description,
-      (d.highlights||[]).join(' | ')
-    ].map(function(v){
-      var s=String(v||'').replace(/"/g,'""');
-      return '"'+s+'"';
-    });
-  });
-  var csv=[headers.map(function(h){return'"'+h+'"';}).join(',')].concat(rows.map(function(r){return r.join(',');})).join('\n');
-  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;
-  var d=new Date();
-  var ds=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
-  a.download='DeVaney_DealScout_'+ds+'.csv';
-  a.click();
-  URL.revokeObjectURL(url);
+function runFromLibrary(ctx){
+  const deals = generateFallbackSearchLinks(ctx).map(d=>({...d, score: scoreDeal(d, ctx)}));
+  logPush(`Generated ${deals.length} live platform search-result links as fallback`, 'log-ok');
+  logPush(`Click "View Listing →" on any card to browse current inventory on the platform`, 'log-ok');
+  renderResults(deals);
 }
 
-function renderResults(deals){
-  var t1=deals.filter(function(d){return d.tier===1;}).length;
-  var t2=deals.filter(function(d){return d.tier===2;}).length;
-  var t3=deals.filter(function(d){return d.tier===3;}).length;
-  var avg=deals.length?Math.round(deals.reduce(function(a,b){return a+(b.fitScore||0);},0)/deals.length):0;
-
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">'+
-    '<div style="font-size:13px;color:var(--text-muted)">'+deals.length+' listings &middot; sorted by fit score</div>'+
-    '<button onclick="exportCSV()" style="padding:8px 16px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">&#11015; Export CSV</button>'+
-    '</div>'+
-    '<div class="summary-bar">'+
-    '<div class="stat-card"><div class="stat-label">Listings</div><div class="stat-value">'+deals.length+'</div></div>'+
-    '<div class="stat-card"><div class="stat-label">Avg Fit</div><div class="stat-value">'+avg+'</div></div>'+
-    '<div class="stat-card"><div class="stat-label">T1/T2/T3</div><div class="stat-value" style="font-size:16px">'+t1+'&middot;'+t2+'&middot;'+t3+'</div></div>'+
-    '<div class="stat-card"><div class="stat-label">SBA Eligible</div><div class="stat-value">'+deals.filter(function(d){return d.sbaEligible;}).length+'/'+deals.length+'</div></div>'+
-    '</div><div class="results-grid">';
-
-  lastDeals=deals.slice();
-  deals.sort(function(a,b){return(b.fitScore||0)-(a.fitScore||0);}).forEach(function(d){
-    var tc=d.tier===1?'t1':d.tier===2?'t2':'t3';
-    var tl=d.tier===1?'Tier 1 &mdash; Trades':d.tier===2?'Tier 2 &mdash; Billing/Mfg':'Tier 3 &mdash; Hospitality';
-    html+='<div class="deal-card '+tc+'">'+
-      '<div class="deal-header"><div class="deal-title">'+d.title+'</div><div class="deal-ask">'+fmt(d.askingPrice)+'</div></div>'+
-      '<div class="deal-meta"><span class="tp '+tc+'">'+tl+'</span><span class="pill">&#128205; '+d.location+'</span><span class="pill">'+d.sector+'</span><span class="pill">'+d.yearsOp+' yrs</span>'+(d.sbaEligible?'<span class="pill sba">SBA &#10003;</span>':'')+'</div>'+
-      '<div class="deal-desc">'+d.description+'</div>'+
-      '<div class="metrics">'+
-        '<div class="metric"><div class="metric-label">SDE</div><div class="metric-value">'+fmt(d.sde)+'</div></div>'+
-        '<div class="metric"><div class="metric-label">Semi-Absentee</div><div class="metric-value" style="font-size:11px;line-height:1.4">'+d.semiAbsentee+'</div></div>'+
-        '<div class="metric"><div class="metric-label">Platform</div><div class="metric-value" style="font-size:11px">'+d.platform+'</div></div>'+
-      '</div>'+
-      '<div class="highlights"><div class="hl-label">Highlights</div>'+(d.highlights||[]).map(function(h){return'<div class="hl-item">'+h+'</div>';}).join('')+'</div>'+
-      '<div class="risk"><strong>&#9888; Risk:</strong> '+d.riskFlag+'</div>'+
-      '<div class="deal-footer"><span class="src-tag">'+d.platform+' &middot; Last 30 days</span><span class="fit '+fitCls(d.fitScore)+'">'+fitLbl(d.fitScore)+' ('+d.fitScore+')</span></div>'+
-    '</div>';
-  });
-
-  html+='</div>';
-  document.getElementById('results').innerHTML=html;
-}
-
-renderSrc();
+document.getElementById('scoutBtn').addEventListener('click', runScout);
 </script>
+
 </body>
 </html>
